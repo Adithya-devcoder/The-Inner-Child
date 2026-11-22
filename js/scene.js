@@ -2,8 +2,7 @@
 (function () {
   'use strict';
   const TIC = window.TIC;
-  const { reduce, fine, isMobile, hasGsap } = TIC;
-  const gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
+  const { reduce, fine, isMobile, isTablet, isShort } = TIC;
 
   /* ================= THREE.JS SCENE ================= */
   async function initScene() {
@@ -11,7 +10,7 @@
     const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
     const canvas = document.getElementById('webgl');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     renderer.setSize(innerWidth, innerHeight, false);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
@@ -22,7 +21,7 @@
     scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
 
     const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, 0.1, 100);
-    camera.position.set(0, 0.3, isMobile() ? 11 : 10);
+    camera.position.set(0, 0.3, (isMobile() || isShort()) ? 11.2 : 10);
 
     const key = new THREE.DirectionalLight(0xfff0dc, 2.4); key.position.set(4, 6, 5); scene.add(key);
     const rim = new THREE.DirectionalLight(0xffd2a8, 1.2); rim.position.set(-5, 2, -4); scene.add(rim);
@@ -86,7 +85,7 @@
       p.setXYZ(i, x, y, z);
     }
     beanGeo.computeVertexNormals();
-    const BEANS = isMobile() ? 18 : 32;
+    const BEANS = isMobile() ? 16 : 32;
     const beans = new THREE.InstancedMesh(beanGeo, new THREE.MeshPhysicalMaterial({ color: 0x4b2a16, roughness: .42, clearcoat: .6, clearcoatRoughness: .3 }), BEANS);
     scene.add(beans);
     const beanData = Array.from({ length: BEANS }, () => ({
@@ -129,19 +128,42 @@
       scene.add(s); return s;
     });
 
-    /* --- Pose system (driven by GSAP ScrollTrigger) --- */
+    /* --- Pose system (responsive across mobile, tablet, desktop) --- */
     const poses = {
-      hero:      () => isMobile() ? { x: 0, y: -1.55, rx: .45, ry: -.6, rz: .06, s: .62, spread: .7 } : { x: 2.45, y: -.2, rx: .4, ry: -.6, rz: .08, s: 1.05, spread: 1 },
-      story:     () => isMobile() ? { x: 0, y: -3.4, rx: 1.0, ry: .7, rz: 0, s: .55, spread: .6 } : { x: -2.7, y: -.15, rx: 1.0, ry: .7, rz: -.06, s: .95, spread: 1.25 },
-      kitchen:   () => ({ x: 0, y: 4.8, rx: .4, ry: 2.4, rz: 0, s: .55, spread: 1.6 }),
-      statement: () => isMobile() ? { x: 0, y: -.05, rx: .55, ry: 6.0, rz: 0, s: .72, spread: 1.1 } : { x: 0, y: -.1, rx: .55, ry: 6.0, rz: 0, s: 1.25, spread: 1.7 },
-      visit:     () => ({ x: isMobile() ? 0 : 2.6, y: 4.2, rx: .3, ry: 7.4, rz: 0, s: .6, spread: 2 })
+      hero: () => {
+        if (isMobile()) return { x: 0, y: isShort() ? -1.1 : -1.5, rx: .45, ry: -.6, rz: .06, s: isShort() ? .48 : .60, spread: .7 };
+        if (isTablet()) return { x: 1.6, y: -.2, rx: .4, ry: -.6, rz: .08, s: .85, spread: .9 };
+        return { x: 2.45, y: -.2, rx: .4, ry: -.6, rz: .08, s: 1.05, spread: 1 };
+      },
+      story: () => {
+        if (isMobile()) return { x: 0, y: isShort() ? -2.2 : -3.2, rx: 1.0, ry: .7, rz: 0, s: .52, spread: .6 };
+        if (isTablet()) return { x: -1.7, y: -.15, rx: 1.0, ry: .7, rz: -.06, s: .8, spread: 1.1 };
+        return { x: -2.7, y: -.15, rx: 1.0, ry: .7, rz: -.06, s: .95, spread: 1.25 };
+      },
+      kitchen: () => ({ x: 0, y: 5.0, rx: .4, ry: 2.4, rz: 0, s: isMobile() ? .48 : .55, spread: 1.6 }),
+      statement: () => {
+        if (isMobile()) return { x: 0, y: -.05, rx: .55, ry: 6.0, rz: 0, s: isShort() ? .5 : .68, spread: 1.1 };
+        if (isTablet()) return { x: 0, y: -.1, rx: .55, ry: 6.0, rz: 0, s: 1.0, spread: 1.4 };
+        return { x: 0, y: -.1, rx: .55, ry: 6.0, rz: 0, s: 1.25, spread: 1.7 };
+      },
+      visit: () => ({
+        x: isMobile() ? 0 : (isTablet() ? 2.0 : 2.6),
+        y: 4.2, rx: .3, ry: 7.4, rz: 0,
+        s: isMobile() ? .52 : .6,
+        spread: 2
+      })
     };
+
     const pose = { ...poses.hero() };
     const cur = { ...pose };
     const intro = { s: 0 };
     const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
-    addEventListener('pointermove', e => { mouse.tx = (e.clientX / innerWidth - .5) * 2; mouse.ty = (e.clientY / innerHeight - .5) * 2; });
+
+    addEventListener('pointermove', e => {
+      if (e.pointerType === 'touch') return;
+      mouse.tx = (e.clientX / innerWidth - .5) * 2;
+      mouse.ty = (e.clientY / innerHeight - .5) * 2;
+    });
 
     const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e3 = new THREE.Euler(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3(), tmp = new THREE.Vector3();
     let visible = true;
@@ -196,14 +218,16 @@
     }
 
     function resize() {
-      camera.aspect = innerWidth / innerHeight;
-      camera.position.z = isMobile() ? 11 : 10;
+      const w = window.innerWidth, h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.position.z = (TIC.isMobile() || TIC.isShort()) ? 11.2 : 10;
       camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight, false);
+      renderer.setSize(w, h, false);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     }
     addEventListener('resize', resize);
 
-    return { pose, poses, intro, render, setVisible: v => { visible = v; } };
+    return { pose, poses, intro, render, resize, setVisible: v => { visible = v; } };
   }
   TIC.initScene = initScene;
 })();
