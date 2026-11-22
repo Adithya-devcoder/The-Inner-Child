@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Inner Child Restaurant · Tiruvannamalai</title>
+<meta name="description" content="The Inner Child Restaurant — sourdough, slow coffee and South Indian comfort food in a sunlit room full of plants. 335, Chengam Road, Ramana Nagar, Tiruvannamalai." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/components.css" />
+<link rel="stylesheet" href="css/sections.css" />
+</head>
+<body>
+
+<!-- Liquid glass refraction filter -->
+<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="liquid" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+    <feTurbulence id="liquidNoise" type="fractalNoise" baseFrequency="0.009 0.013" numOctaves="2" seed="11" result="noise" />
+    <feGaussianBlur in="noise" stdDeviation="2.5" result="soft" />
+    <feDisplacementMap id="liquidMap" in="SourceGraphic" in2="soft" scale="70" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__inner"><div class="loader__word"><span class="lw">The</span> <span class="lw"><em>Inner</em></span> <span class="lw">Child</span></div></div>
+  <div class="loader__meta">Tiruvannamalai · Tamil Nadu</div>
+  <div class="loader__count">0</div>
+</div>
+
+<div class="cursor" aria-hidden="true"><span>View</span></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<canvas id="webgl" aria-hidden="true"></canvas>
+
+<header class="nav glass" id="nav">
+  <a href="#hero" class="brand" aria-label="The Inner Child Restaurant, back to top">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 2.5v4.5M20 33v4.5M2.5 20H7M33 20h4.5M7.6 7.6l3.2 3.2M29.2 29.2l3.2 3.2M32.4 7.6l-3.2 3.2M10.8 29.2l-3.2 3.2"/></g>
+      <circle cx="20" cy="20" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="16.8" cy="18.4" r="1.3" fill="currentColor"/><circle cx="23.2" cy="18.4" r="1.3" fill="currentColor"/>
+      <path d="M16.2 22.4c2 2.3 5.6 2.3 7.6 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    <span>The Inner Child</span>
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#story" data-cursor="link">Story</a>
+    <a href="#kitchen" data-cursor="link">Kitchen</a>
+    <a href="#space" data-cursor="link">Space</a>
+    <a href="#visit" data-cursor="link">Visit</a>
+  </nav>
+  <div class="nav__right">
+    <a class="btn btn--solid btn--sm magnetic" href="tel:+919566662125">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+      <span>Call<span class="long"> to reserve</span></span>
+    </a>
+    <button class="nav__menu" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu glass" id="mobileMenu" hidden>
+  <a href="#story">Story</a><a href="#kitchen">Kitchen</a><a href="#space">Space</a><a href="#visit">Visit</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="chip glass hero-in"><span class="dot"></span>Café &amp; kitchen · Ramana Nagar, Tiruvannamalai</div>
+    <h1 class="hero__title">
+      <span class="sr-only">Feed your inner child.</span>
+      <span class="line" aria-hidden="true" data-chars>Feed your</span>
+      <span class="line" aria-hidden="true"><em data-chars>inner child.</em></span>
+    </h1>
+    <div class="hero__bottom">
+      <p class="hero__lede hero-in">Sourdough, slow coffee and South Indian comfort food, served in a sunlit room full of plants.</p>
+      <div class="hero__ctas hero-in">
+        <a class="btn btn--solid magnetic" href="#visit">Plan a visit
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn glass btn--glass magnetic" href="#kitchen">See the kitchen</a>
+      </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">Scroll</div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track" data-dir="1">
+      <div class="marquee__group">
+        <span>Sourdough</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Latte art</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Millet dosa</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Slow mornings</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+      </div>
+      <div class="marquee__group">
+        <span>Sourdough</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Latte art</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Millet dosa</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+        <span>Slow mornings</span><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="marquee marquee--alt" aria-hidden="true">
+    <div class="marquee__track" data-dir="-1">
+      <div class="marquee__group">
+        <span>Come as you are</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+        <span>Stay a little longer</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+        <span>Made slowly</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+      </div>
+      <div class="marquee__group">
+        <span>Come as you are</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+        <span>Stay a little longer</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+        <span>Made slowly</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <section class="story" id="story">
+    <div class="story__text">
+      <span class="label">01 — Our story</span>
+      <p class="story__p" data-words>Remember being small, when a <em class="hl">warm dosa,</em> a slice of <em class="hl">fresh bread</em> or a long, lazy afternoon was the whole world? The Inner Child is a room full of light in Ramana Nagar where we cook like that again: simple food, made slowly, shared with <em class="hl">whoever walks in.</em></p>
+      <div class="story__host">
+        <div class="avatar" aria-hidden="true">P</div>
+        <div>Hosted by <strong>Prem</strong> (Premkumar Prakash)<br />335, Chengam Road, Tiruvannamalai</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KITCHEN -->
+  <section class="section kitchen" id="kitchen">
+    <div class="kitchen__head">
+      <div>
+        <span class="label reveal">02 — From the kitchen</span>
+        <h2 class="h2 reveal">Made slowly,<br /><em>eaten happily.</em></h2>
+      </div>
+      <p class="reveal">A few of the things we love making. The menu moves with the season and the oven, so check Instagram for what’s fresh today.</p>
+    </div>
+
+    <div class="dishes">
+      <article class="dish">
+        <div class="dish__inner" data-cursor="hover">
+          <div class="dish__img"><img src="assets/images/coffee-latte.jpg" alt="A latte with rosetta latte art in a glass cup" /></div>
+          <div class="dish__body glass glass--dark">
+            <span class="dish__no">01</span>
+            <h3>Slow coffee</h3>
+            <p>Espresso pulled with patience, finished with silky milk and a rosetta on top.</p>
+          </div>
+        </div>
+      </article>
+      <article class="dish">
+        <div class="dish__inner" data-cursor="hover">
+          <div class="dish__img"><img src="assets/images/sourdough.jpg" alt="Four sourdough loaves with a golden, scored crust" /></div>
+          <div class="dish__body glass glass--dark">
+            <span class="dish__no">02</span>
+            <h3>Sourdough</h3>
+            <p>Naturally leavened loaves with a deep, crackling crust and an open crumb.</p>
+          </div>
+        </div>
+      </article>
+      <article class="dish">
+        <div class="dish__inner" data-cursor="hover">
+          <div class="dish__img"><img src="assets/images/millet-dosa.jpg" alt="A crisp millet dosa served with a bowl of chutney" /></div>
+          <div class="dish__body glass glass--dark">
+            <span class="dish__no">03</span>
+            <h3>Millet dosa</h3>
+            <p>A crisp, earthy dosa with a bowl of fresh chutney on the side.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="kitchen__more reveal">
+      <a class="ulink" data-cursor="link" href="https://www.instagram.com/theinnerchildrestaurant/?hl=en" target="_blank" rel="noopener">See today’s specials on Instagram
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </div>
+  </section>
+
+  <!-- SPACE -->
+  <section class="space" id="space">
+    <div class="space__track">
+      <div class="space__panel space__intro">
+        <span class="label">03 — The space</span>
+        <h2 class="h2">A glasshouse<br /><em>for slow mornings.</em></h2>
+        <p>Windows on every side, pendant lamps, plants hanging from the beams and long tables made for sharing. Light pours in all day.</p>
+      </div>
+      <figure class="space__panel space__fig" data-cursor="hover">
+        <img src="assets/images/interior.jpg" alt="The sunlit dining room with large windows, hanging plants and pendant lamps" />
+        <figcaption class="space__cap glass glass--dark"><strong>Light from every side</strong><span>The main room, wrapped in glass and greenery.</span></figcaption>
+      </figure>
+      <figure class="space__panel space__fig tall" data-cursor="hover">
+        <img src="assets/images/cane-chairs.jpg" alt="Two cane lounge chairs and a small table by a tall window" />
+        <figcaption class="space__cap glass glass--dark"><strong>Quiet corners</strong><span>Cane chairs by the window, for a book and a second cup.</span></figcaption>
+      </figure>
+      <div class="space__panel space__list">
+        <h3>What you’ll find</h3>
+        <ul>
+          <li><span>01</span>Fresh sourdough loaves</li>
+          <li><span>02</span>Specialty coffee &amp; latte art</li>
+          <li><span>03</span>Millet and South Indian plates</li>
+          <li><span>04</span>A room full of plants and light</li>
+          <li><span>05</span>Time to slow down</li>
+        </ul>
+      </div>
+    </div>
+    <div class="space__progress" aria-hidden="true"><i></i></div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement" id="statement">
+    <p class="sr-only">Come as you are. Stay a little longer.</p>
+    <div class="statement__line" aria-hidden="true" data-chars>Come as you are.</div>
+    <div class="statement__line" aria-hidden="true">Stay a little <em data-chars>longer.</em></div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="section visit" id="visit">
+    <div class="visit__bg" aria-hidden="true"><img src="assets/images/interior.jpg" alt="" /></div>
+    <div class="visit__wrap">
+      <span class="label reveal">04 — Visit</span>
+      <h2 class="h2 reveal">Come say <em>hello.</em></h2>
+      <p class="visit__intro reveal">Find us on Chengam Road in Ramana Nagar, Tiruvannamalai. Call or message Prem to book a table or ask about today’s bakes.</p>
+
+      <div class="visit__grid">
+        <div class="card glass glass--dark reveal">
+          <h3>Address</h3>
+          <address class="address">335, Chengam Road, 1st Street,<br />Ramana Nagar, Tiruvannamalai,<br />Tamil Nadu 606603</address>
+          <div class="map" aria-hidden="true">
+            <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice">
+              <g fill="none" stroke="rgba(251,247,240,.14)" stroke-width="1">
+                <path d="M0 40h400M0 95h400M0 160h400M0 205h400M60 0v225M140 0v225M250 0v225M330 0v225"/>
+              </g>
+              <path d="M-20 210 L420 30" stroke="rgba(232,183,90,.75)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M-20 210 L420 30" stroke="rgba(43,29,20,.6)" stroke-width="1" stroke-dasharray="6 6"/>
+              <path d="M175 140 L230 230" stroke="rgba(251,247,240,.45)" stroke-width="5" stroke-linecap="round"/>
+              <text x="285" y="66" fill="rgba(251,247,240,.75)" font-size="11" font-family="Manrope" letter-spacing="1.5" transform="rotate(-22 285 66)">CHENGAM ROAD</text>
+              <text x="212" y="196" fill="rgba(251,247,240,.55)" font-size="9" font-family="Manrope" letter-spacing="1.2" transform="rotate(58 212 196)">1ST STREET</text>
+              <circle class="pulse" cx="196" cy="160" r="10" fill="rgba(194,94,44,.6)"/>
+              <g class="pin"><path d="M196 160c-12-16-18-26-18-35a18 18 0 1 1 36 0c0 9-6 19-18 35z" fill="#c25e2c"/><circle cx="196" cy="125" r="6.5" fill="#fbf7f0"/></g>
+            </svg>
+            <span class="map__coords">12.2206° N · 79.0575° E</span>
+          </div>
+          <a class="btn btn--light magnetic" data-cursor="link" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/place/The+Inner+Child+Restaurant/@12.2205813,79.0574595,17z/data=!4m9!3m8!1s0x3bacc078ea016339:0x5b5d3bd95f368cbf!5m2!4m1!1i2!8m2!3d12.2205813!4d79.0574595!16s%2Fg%2F11fzq2bqyf?hl=en&amp;entry=ttu&amp;g_ep=EgoyMDI2MTExOC4xIKXMDSoASAFQAw%3D%3D">
+            Get directions
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+          <p class="hours-note">For today’s opening hours, check Google Maps or Instagram.</p>
+        </div>
+
+        <div class="tiles">
+          <a class="tile glass glass--dark reveal" data-cursor="link" href="tel:+919566662125">
+            <div class="tile__top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </div>
+            <div><small>Call</small><strong>+91 95666 62125</strong></div>
+          </a>
+          <a class="tile glass glass--dark reveal" data-cursor="link" href="https://wa.me/919566662125" target="_blank" rel="noopener">
+            <div class="tile__top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.4z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8a4 4 0 0 1-2.1-2.1l.8-1-1-2z"/></svg>
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </div>
+            <div><small>WhatsApp</small><strong>Message Prem</strong></div>
+          </a>
+          <a class="tile glass glass--dark reveal" data-cursor="link" href="mailto:prakash_premkumar@yahoo.com">
+            <div class="tile__top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </div>
+            <div><small>Email</small><strong>prakash_premkumar@yahoo.com</strong></div>
+          </a>
+          <a class="tile glass glass--dark reveal" data-cursor="link" href="https://www.instagram.com/theinnerchildrestaurant/?hl=en" target="_blank" rel="noopener">
+            <div class="tile__top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+            </div>
+            <div><small>Instagram</small><strong>@theinnerchildrestaurant</strong></div>
+          </a>
+          <div class="tile tile--wide glass glass--dark reveal">
+            <div class="avatar" aria-hidden="true">P</div>
+            <div><small>Your host</small><strong>Prem (Premkumar Prakash)</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__word" aria-label="The Inner Child"><span data-chars>The Inner</span> <em data-chars>Child</em></div>
+  <div class="footer__row">
+    <span>© <span id="year"></span> The Inner Child Restaurant · Tiruvannamalai, Tamil Nadu</span>
+    <div class="footer__links">
+      <a href="https://www.instagram.com/theinnerchildrestaurant/?hl=en" target="_blank" rel="noopener" data-cursor="link">Instagram</a>
+      <a href="tel:+919566662125" data-cursor="link">+91 95666 62125</a>
+      <a href="#hero" data-cursor="link">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<script src="js/core.js"></script>
+<script src="js/text-split.js"></script>
+<script src="js/smooth-scroll.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/cursor.js"></script>
+<script src="js/liquid-glass.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/scroll-animations.js"></script>
+<script src="js/framer-interactions.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
